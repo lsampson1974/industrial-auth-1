@@ -9,6 +9,7 @@
       </h5>
       <p><%= comment.body %></p>
     </div>
+    <% if comment.author == current_user %>
     <div>
       <%= link_to edit_comment_path(comment), class: "btn btn-link btn-sm text-muted" do %>
         <i class="fas fa-edit fa-fw"></i>
@@ -18,5 +19,6 @@
         <i class="fas fa-trash fa-fw"></i>
       <% end %>
     </div>
+    <% end %>
   </div>
 </li>
