@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show liked feed followers following discover ]
+  before_action :ensure_user_is_authorized, only: [:show, :feed, :discover]
 
   private
 
@@ -10,4 +11,13 @@ class UsersController < ApplicationController
         @user = current_user
       end
     end
+
+    def ensure_user_is_authorized
+      if !UserPolicy.new(current_user, @user).show?
+        raise Pundit::NotAuthorizedError, "not allowed"
+      end
+    end
+      
+
+    
 end
