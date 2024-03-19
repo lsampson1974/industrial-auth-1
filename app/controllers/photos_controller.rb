@@ -1,10 +1,11 @@
 class PhotosController < ApplicationController
   before_action :set_photo, only: %i[ show edit update destroy ]
   before_action :ensure_current_user_is_owner, only: [:destroy, :update, :edit]
-  #before_action :ensure_user_is_authorized, only: [:show]
+  before_action :ensure_user_is_authorized, only: [:show]
 
   # GET /photos or /photos.json
   def index
+    authorize @photo
     @photos = Photo.all
   end
 
@@ -15,6 +16,7 @@ class PhotosController < ApplicationController
 
   # GET /photos/new
   def new
+    authorize @photo
     @photo = Photo.new
   end
 
@@ -24,6 +26,7 @@ class PhotosController < ApplicationController
 
   # POST /photos or /photos.json
   def create
+    authorize @photo
     @photo = Photo.new(photo_params)
     @photo.owner = current_user
 
@@ -40,6 +43,7 @@ class PhotosController < ApplicationController
 
   # PATCH/PUT /photos/1 or /photos/1.json
   def update
+    authorize @photo
     respond_to do |format|
       if @photo.update(photo_params)
         format.html { redirect_to @photo, notice: "Photo was successfully updated." }
@@ -53,7 +57,7 @@ class PhotosController < ApplicationController
 
   # DELETE /photos/1 or /photos/1.json
   def destroy
-
+    authorize @photo
     if current_user == @photo.owner
       @photo.destroy
       

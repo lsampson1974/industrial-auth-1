@@ -3,6 +3,7 @@ class LikesController < ApplicationController
 
   # GET /likes or /likes.json
   def index
+    authorize @likes
     @likes = Like.all
   end
 
